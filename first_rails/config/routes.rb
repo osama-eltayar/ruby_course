@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
-  get 'sessions/login' , to: 'sessions#login'
+  get 'sessions/login' , to: 'sessions#login', as: 'login'
   post 'sessions/login' , to: 'sessions#login_attempt'
-  get 'sessions/logout' , to: 'sessions#logout'
+  get 'sessions/logout' , to: 'sessions#logout', as: 'logout'
   get 'sessions/home' , to: 'sessions#home'
   get 'sessions/profile' ,to: 'sessions#profile'
   get 'sessions/setting', to: 'sessions#setting'

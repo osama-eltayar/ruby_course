@@ -21,14 +21,20 @@ class User < ApplicationRecord
     end
 
     def self.authenticate(username_or_email="", login_password="")
+        # render_bind plain: username_or_email.inspect
+        
         if  EMAIL_REGEX.match(username_or_email)    
             user = User.find_by_email(username_or_email)
+            # abort user.inspect
         else
             user = User.find_by_username(username_or_email)
+            # abort user.inspect
         end
         if user && user.match_password(login_password)
+            # abort user.inspect
             return user
         else
+            # abort ("no user")
             return false
         end
     end 

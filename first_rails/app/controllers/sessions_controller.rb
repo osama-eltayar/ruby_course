@@ -8,14 +8,17 @@ class SessionsController < ApplicationController
 
   def login_attempt
     authorized_user = User.authenticate(params[:username_or_email],params[:login_password])
+    # render plain: authorized_user.inspect
     if authorized_user
       session[:user_id] = authorized_user.id
       flash[:notice] = "Wow Welcome again, you logged in as #{authorized_user.username}"
-      render "profile"
+      redirect_to(:controller => 'sessions', :action => 'profile')
+      # render plain: authorized_user.inspect
     else
       flash[:notice] = "Invalid Username or Password"
       flash[:color]= "invalid"
-      render "login"	
+      # render "login"	
+      render plain: "nono"
     end
   end
 
@@ -32,6 +35,7 @@ class SessionsController < ApplicationController
   def logout
     # render plain: @current_user.inspect
     session[:user_id] = nil
-    render "login"
+    @current_user = nil
+    redirect_to(:controller => 'sessions', :action => 'login')
   end
 end
