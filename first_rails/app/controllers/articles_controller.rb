@@ -1,14 +1,14 @@
 class ArticlesController < ApplicationController
-    before_action :authenticate_user, :only => [:new, :create, :show , :edit , :update , :destroy]
-    before_action :geust_user, :only => [:index]
+   before_action :authenticate_model! , except: :index 
     def new
         @article = Article.new
+        authorize! :create, @article
     end
 
     def create
         # render plain: params[:article].inspect
-        @article = Article.new(detect_article)
-        
+        @article = Article.new(detect_article.merge(model_id: current_model.id))
+        authorize! :create, @article
         if @article.save
             redirect_to @article
         else
@@ -27,10 +27,12 @@ class ArticlesController < ApplicationController
 
     def edit
         @article = Article.find(params[:id])
+        authorize! :update, @article
     end
 
     def update
         @article = Article.find(params[:id])
+        authorize! :update, @article
         if @article.update(detect_article)
             redirect_to @article
         else
@@ -39,7 +41,9 @@ class ArticlesController < ApplicationController
     end
 
     def destroy 
-        Article.find(params[:id]).destroy
+        @article = Article.find(params[:id])
+        authorize! :destroy, @article
+        @article.destroy
         redirect_to articles_path
     end
 

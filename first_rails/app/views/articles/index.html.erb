@@ -1,10 +1,10 @@
+
+   
+
+
 <h1>our articles</h1>
 <h2><%= link_to  "new", new_article_path %></h2>
-<%if @current_user.nil? %>
-    <h2><%= link_to  "login", login_path %></h2>
-<%else%>
-    <h2><%= link_to  "logout", logout_path %></h2>
-<%end%>
+
 
 
 <table class="table">

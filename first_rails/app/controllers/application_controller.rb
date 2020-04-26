@@ -1,30 +1,9 @@
 class ApplicationController < ActionController::Base
+    alias_method :current_user, :current_model
     protected 
-    def authenticate_user
-        if session[:user_id]
-            @current_user = User.find session[:user_id]
-            # render plain: @current_user.inspect
-            return true	
-        else
-            redirect_to(:controller => 'sessions', :action => 'login')
-            return false
-        end
-    end
-    def save_login_state
-        if session[:user_id]
-            redirect_to(:controller => 'sessions', :action => 'profile')
-            return false
-        else
-            return true
-        end
-    end
-
-    def geust_user
-        if session[:user_id]
-            @current_user = User.find session[:user_id]	
-        else
-            @current_user = nil
-        end
+    rescue_from CanCan::AccessDenied do |exception|
+        flash[:notice] = exception.message
+        redirect_to articles_path
     end
 
 end
